@@ -1,0 +1,10 @@
+
+MIT License
+
+Copyright (c) [2024] [C. Bernard]
+
+Par la présente, il est accordé, gratuitement, à toute personne obtenant une copie de ce logiciel et des fichiers associés, le droit d'utiliser, de reproduire, modifier, fusionner, publier, distribuer, sous-licencier et/ou vendre des copies de ce logiciel, et de permettre aux personnes à qui ce logiciel est fourni d'en faire de même, sous les conditions suivantes :
+
+1. La mention de copyright ci-dessus et cette mention de licence doivent être incluses dans toutes les copies ou parties substantielles de ce logiciel.
+
+2. Ce logiciel est fourni "tel quel", sans garantie d'aucune sorte, expresse ou implicite, y compris mais sans s'y limiter, les garanties de qualité marchande, d'adéquation à un usage particulier et de non-violation. En aucun cas, les auteurs ou les détenteurs de droits d'auteur ne peuvent être tenus responsables de toute réclamation, dommages ou autres responsabilités, que ce soit dans une action en justice ou autre, découlant de ou en relation avec ce logiciel ou l'utilisation ou d'autres opérations dans ce logiciel.
