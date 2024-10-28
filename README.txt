@@ -1,15 +1,14 @@
-# GitHub Follower Management Script
+# GitHub Follower Management Script // version 1.2
 
 This Python script allows you to manage your GitHub subscriptions. It can automatically follow users who follow you back and unfollow those who do not.
 
-### Prerequisites
 
+### Prerequisites:
 - Python 3.x installed on your machine.
 - A personal access token from GitHub with the necessary permissions to manage your subscriptions.
 
 
-### Installation
-
+### Installation:
 1. Clone this repository or download the script.
 2. Install the `requests` library if you haven't already. You can install it using pip:
 
@@ -17,8 +16,7 @@ This Python script allows you to manage your GitHub subscriptions. It can automa
    pip install requests
 
 
-### Configuration
-
+### Configuration:
 1. Open the Python script in a text editor.
 2. Replace GITHUB_TOKEN with your personal GitHub access token:
 3. Set the GitHub username for which you want to manage subscriptions:
@@ -32,12 +30,30 @@ To execute both actions, set both to True.
 5. Run the script: python your_script.py
 
 
-### Warning
-
-- Make sure not to abuse GitHub's API requests. Respect the rate limits to avoid being blocked.
+### Warning:
+- Make sure not to abuse GitHub's API requests. Respect the rate limits to avoid being blocked. 
 - Use this script at your own risk. Always check your subscriptions before performing bulk actions.
 
 
-# License
-
+# License:
 This project is licensed under the MIT License. See the docs/LICENSE file for details.
+
+
+* GitHub API Rate Limits:
+All authenticated GitHub accounts are allowed 5000 requests per hour to access the GitHub API. Unauthenticated users (i.e., those who have not provided an authentication token) have a much lower limit of 60 requests per hour.
+
+Example Request Calculation
+Let's imagine you have:
+
+150 followers
+120 people you are following
+10 new followers to follow
+5 people you are following who no longer follow you
+The total number of requests would be as follows:
+
+5 requests to retrieve followers (get_followers) (150 / 30).
+4 requests to retrieve following (get_following) (120 / 30).
+10 requests to follow new followers.
+5 requests to unfollow certain people.
+Total: 24 requests
+This script operates well within the 5000 requests per hour limit for authenticated users.
