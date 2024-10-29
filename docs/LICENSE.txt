@@ -1,10 +1,9 @@
-
 MIT License
 
 Copyright (c) [2024] [C. Bernard]
 
-Par la présente, il est accordé, gratuitement, à toute personne obtenant une copie de ce logiciel et des fichiers associés, le droit d'utiliser, de reproduire, modifier, fusionner, publier, distribuer, sous-licencier et/ou vendre des copies de ce logiciel, et de permettre aux personnes à qui ce logiciel est fourni d'en faire de même, sous les conditions suivantes :
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated files (the "Software"), to use, reproduce, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-1. La mention de copyright ci-dessus et cette mention de licence doivent être incluses dans toutes les copies ou parties substantielles de ce logiciel.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-2. Ce logiciel est fourni "tel quel", sans garantie d'aucune sorte, expresse ou implicite, y compris mais sans s'y limiter, les garanties de qualité marchande, d'adéquation à un usage particulier et de non-violation. En aucun cas, les auteurs ou les détenteurs de droits d'auteur ne peuvent être tenus responsables de toute réclamation, dommages ou autres responsabilités, que ce soit dans une action en justice ou autre, découlant de ou en relation avec ce logiciel ou l'utilisation ou d'autres opérations dans ce logiciel.
+The Software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the Software or the use or other dealings in the Software.
