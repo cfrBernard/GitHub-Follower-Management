@@ -1,16 +1,20 @@
 # GitHub Follower Management Script 
 
-This Python script allows you to manage your GitHub subscriptions. It can automatically follow users who follow you back and unfollow those who do not.
+This Python script allows you to manage your GitHub subscriptions through a graphical user interface (GUI). It can automatically follow users who follow you back, unfollow those who do not, and manage a blacklist of users to ignore.
 
+### Features:
+- **Follow Back Followers**: Automatically follow users who follow you.
+- **Unfollow Non-Followers**: Unfollow users who do not follow you back.
+- **Blacklist Management**: Load and save a list of users to ignore during operations.
+- **Rate Limit Monitoring**: Displays API usage and remaining requests.
 
 ### Prerequisites:
 - Python 3.x installed on your machine.
 - A personal access token from GitHub with the necessary permissions to manage your subscriptions.
 
-
 ### Installation:
 1. Clone this repository or download the script.
-2. Install the `requests` library if you haven't already. You can install it using pip:
+2. Install the `requests` library and `tkinter` if you haven't already. You can install the requests library using pip:
 
    ```bash
    pip install requests
@@ -18,16 +22,10 @@ This Python script allows you to manage your GitHub subscriptions. It can automa
 
 ### Configuration:
 1. Open the Python script in a text editor.
-2. Replace GITHUB_TOKEN with your personal GitHub access token:
-3. Set the GitHub username for which you want to manage subscriptions:
-4. Use the following variables to enable or disable features:
-   
-   follow_back = True    # Follow users who follow you
-   unfollow_non_followers = True   # Unfollow users who do not follow you
-
-To execute both actions, set both to True.
-
-5. Run the script: python your_script.py
+2. Replace GITHUB_TOKEN with your personal GitHub access token.
+3. Run the script: python your_script.py
+4. Set the GitHub username for which you want to manage subscriptions in the GUI.
+5. Use the GUI to enable or disable features.
 
 
 ### Warning:
@@ -56,4 +54,5 @@ The total number of requests would be as follows:
 10 requests to follow new followers.
 5 requests to unfollow certain people.
 Total: 24 requests
+
 This script operates well within the 5000 requests per hour limit for authenticated users.
