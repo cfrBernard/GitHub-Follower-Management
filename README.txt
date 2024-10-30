@@ -1,58 +1,85 @@
-# GitHub Follower Management Script 
+# GitHub Follower Management Script
+This Python script allows you to manage your GitHub subscriptions through a GUI. It can automatically follow users who follow you back, unfollow those who do not, and manage a blacklist of users to ignore.
 
-This Python script allows you to manage your GitHub subscriptions through a graphical user interface (GUI). It can automatically follow users who follow you back, unfollow those who do not, and manage a blacklist of users to ignore.
+## Features:
+- Follow Back Followers
+- Unfollow Non-Followers
+- Blacklist Management
+- Rate Limit Monitoring
 
-### Features:
-- **Follow Back Followers**: Automatically follow users who follow you.
-- **Unfollow Non-Followers**: Unfollow users who do not follow you back.
-- **Blacklist Management**: Load and save a list of users to ignore during operations.
-- **Rate Limit Monitoring**: Displays API usage and remaining requests.
-
-### Prerequisites:
+## Prerequisites:
 - Python 3.x installed on your machine.
 - A personal access token from GitHub with the necessary permissions to manage your subscriptions.
 
-### Installation:
-1. Clone this repository or download the script.
-2. Install the `requests` library and `tkinter` if you haven't already. You can install the requests library using pip:
 
+## Installation:
+1. Clone this repository or download the script.
+   ```bash
+   git clone https://github.com/cfrBernard/GitHub-Follower-Management.git
+   cd GitHub-Follower-Management
+
+2. Install the required libraries. You can install the requests library using pip:
    ```bash
    pip install requests
+   
+   Note: tkinter comes pre-installed with Python on most systems, but you can check if it's available by trying to import it in a Python shell.
 
 
-### Configuration:
-1. Open the Python script in a text editor.
-2. Replace GITHUB_TOKEN with your personal GitHub access token.
-3. Run the script: python your_script.py
-4. Set the GitHub username for which you want to manage subscriptions in the GUI.
-5. Use the GUI to enable or disable features.
+## Configuration:
+1. Create a config.txt file in the same directory as the script.
+
+2. Add the following lines to config.txt:
+   GITHUB_TOKEN=your_personal_access_token
+   GITHUB_USERNAME=your_github_username
+   BLACKLIST=user1,user2,user3  # comma-separated list of usernames to ignore
+
+3. Run the script:
+   ```bash
+   python github_followback.py
+
+4. The GUI will appear. You can adjust settings as needed.
 
 
-### Warning:
-- Make sure not to abuse GitHub's API requests. Respect the rate limits to avoid being blocked. 
-- Use this script at your own risk. Always check your subscriptions before performing bulk actions.
+## Usage:
+1. Enter your GitHub username in the GUI.
+
+2. Enable or disable features:
+   - Follow Back Followers: Check this box to automatically follow back users who follow you.
+   - Unfollow Non-Followers: Check this box to unfollow users who do not follow you back.
+
+3. Manage the blacklist by entering usernames in the designated text area (one per line).
+
+4. Click the Start button to begin processing.
 
 
-# License:
-This project is licensed under the MIT License. See the docs/LICENSE file for details.
+## Warning:
+- Respect GitHub's API Rate Limits: Make sure not to abuse GitHub's API requests. You are allowed 5000 requests per hour if authenticated.
+- Use at Your Own Risk: Always review your subscriptions before performing bulk actions.
 
 
-* GitHub API Rate Limits:
-All authenticated GitHub accounts are allowed 5000 requests per hour to access the GitHub API. Unauthenticated users (i.e., those who have not provided an authentication token) have a much lower limit of 60 requests per hour.
+## GitHub API Rate Limits
+- Authenticated accounts: 5000 requests per hour.
+- Unauthenticated users: 60 requests per hour.
 
-Example Request Calculation
-Let's imagine you have:
+### Example Request Calculation
+For instance, with:
 
-150 followers
-120 people you are following
-10 new followers to follow
-5 people you are following who no longer follow you
-The total number of requests would be as follows:
+- 150 followers
+- 120 following
+- 10 new followers to follow
+- 5 who don't follow back
 
-5 requests to retrieve followers (get_followers) (150 / 30).
-4 requests to retrieve following (get_following) (120 / 30).
-10 requests to follow new followers.
-5 requests to unfollow certain people.
-Total: 24 requests
+You will make approximately:
 
-This script operates well within the 5000 requests per hour limit for authenticated users.
+- 5 requests for followers
+- 4 requests for following
+- 10 requests to follow new followers
+- 5 requests to unfollow
+
+**Total**: 24 requests (well within the limit for authenticated users).
+
+*Note: Rate limit information will be displayed in the GUI.*
+
+
+# License
+This project is licensed under the MIT License. See the LICENSE file for details.

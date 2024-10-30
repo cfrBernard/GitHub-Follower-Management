@@ -4,31 +4,45 @@ from tkinter import messagebox, ttk
 import time
 import os
 
-# Replace 'your_github_token' with your actual GitHub token
-GITHUB_TOKEN = 'your_github_token'
-headers = {"Authorization": f"token {GITHUB_TOKEN}"}
-
 class GitHubManager:
     def __init__(self):
         self.requests_made = 0
         self.blacklist = set()
-        self.load_blacklist() 
+        self.github_token = ""
+        self.github_username = ""
+        self.headers = {}
+        self.load_config()
 
-    def load_blacklist(self):
-        """ Load blacklist from a file. """
-        if os.path.exists('blacklist.txt'):
-            with open('blacklist.txt', 'r') as file:
-                self.blacklist = {line.strip() for line in file if line.strip()}
+    def load_config(self):
+        """ Load GitHub token, username, and blacklist from config.txt """
+        if os.path.exists('config.txt'):
+            with open('config.txt', 'r') as file:
+                for line in file:
+                    if line.startswith("GITHUB_TOKEN="):
+                        self.github_token = line.split('=')[1].strip()
+                        self.headers = {"Authorization": f"token {self.github_token}"}
+                    elif line.startswith("GITHUB_USERNAME="):
+                        self.github_username = line.split('=')[1].strip()
+                    elif line.startswith("BLACKLIST="):
+                        blacklist_users = line.split('=')[1].strip()
+                        self.blacklist = set(blacklist_users.split(','))
+        else:
+            raise FileNotFoundError("Configuration file config.txt not found.")
 
     def save_blacklist(self):
-        """ Save the current blacklist to a file. """
-        with open('blacklist.txt', 'w') as file:
-            for user in self.blacklist:
-                file.write(user + '\n')
+        """ Save the current blacklist to config.txt """
+        with open('config.txt', 'r') as file:
+            lines = file.readlines()
+        with open('config.txt', 'w') as file:
+            for line in lines:
+                if line.startswith("BLACKLIST="):
+                    file.write(f"BLACKLIST={','.join(self.blacklist)}\n")
+                else:
+                    file.write(line)
 
     def api_request(self, url):
         """ Generic API request handler """
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=self.headers)
         self.requests_made += 1 
         if response.status_code != 200:
             raise Exception(f"API Error: {response.status_code}")
@@ -68,12 +82,12 @@ class GitHubManager:
     def _manage_following(self, method, username):
         """ Manage following/unfollowing users """
         url = f"https://api.github.com/user/following/{username}"
-        response = requests.request(method, url, headers=headers)
+        response = requests.request(method, url, headers=self.headers)
         self.requests_made += 1
         return response.status_code == 204
 
     def display_rate_limits(self):
-        response = requests.get("https://api.github.com/user", headers=headers)
+        response = requests.get("https://api.github.com/user", headers=self.headers)
         if response.status_code == 200:
             limits = response.headers
             reset_in_seconds = int(limits['X-RateLimit-Reset']) - int(time.time())
@@ -97,6 +111,7 @@ class App:
 
         tk.Label(frame, text="GitHub Username:", bg="#ffffff").grid(row=0, column=0, sticky="e")
         self.entry_username = tk.Entry(frame, width=25)
+        self.entry_username.insert(0, self.github_manager.github_username)  # Insert username from config
         self.entry_username.grid(row=0, column=1)
 
         self.var_follow_back = tk.BooleanVar()
@@ -107,6 +122,7 @@ class App:
 
         tk.Label(frame, text="Blacklist Usernames (one per line):", bg="#ffffff").grid(row=3, column=0, sticky="e")
         self.blacklist_entry = tk.Text(frame, height=5, width=20)
+        self.blacklist_entry.insert(tk.END, "\n".join(self.github_manager.blacklist))  # Load blacklist from config
         self.blacklist_entry.grid(row=3, column=1)
 
         ttk.Button(frame, text="Update Blacklist", command=self.update_blacklist).grid(row=4, column=0, columnspan=2, pady=10)
@@ -119,7 +135,7 @@ class App:
         self.github_manager.requests_made = 0
         self.text_output.delete(1.0, tk.END)
         username = self.entry_username.get().strip()
-        
+
         if not username:
             messagebox.showwarning("Warning", "Please enter a username.")
             return
