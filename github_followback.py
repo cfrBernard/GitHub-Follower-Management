@@ -48,13 +48,13 @@ class GitHubManager:
             raise Exception(f"API Error: {response.status_code}")
         return response.json()
 
-    def get_followers(self, username):
-        return self._get_users(f"https://api.github.com/users/{username}/followers")
+    def get_followers(self, username, output_textbox=None):
+        return self._get_users(f"https://api.github.com/users/{username}/followers", output_textbox=output_textbox)
 
-    def get_following(self, username):
-        return self._get_users(f"https://api.github.com/users/{username}/following")
+    def get_following(self, username, output_textbox=None):
+        return self._get_users(f"https://api.github.com/users/{username}/following", output_textbox=output_textbox)
 
-    def _get_users(self, url):
+    def _get_users(self, url, output_textbox=None):
         """ Retrieve users (followers or following) and apply blacklist """
         users = []
         page = 1
@@ -63,7 +63,8 @@ class GitHubManager:
             try:
                 page_users = self.api_request(full_url)
             except Exception as e:
-                messagebox.showerror("Error", str(e))
+                if output_textbox:
+                    output_textbox.insert(tk.END, f"Error: {str(e)}\n")  # Afficher l'erreur dans la Text box
                 break
 
             if not page_users:
@@ -137,11 +138,11 @@ class App:
         username = self.entry_username.get().strip()
 
         if not username:
-            messagebox.showwarning("Warning", "Please enter a username.")
+            self.text_output.insert(tk.END, "Warning: Please enter a username.\n")
             return
 
-        followers = self.github_manager.get_followers(username)
-        following = self.github_manager.get_following(username)
+        followers = self.github_manager.get_followers(username, output_textbox=self.text_output)
+        following = self.github_manager.get_following(username, output_textbox=self.text_output)
 
         if self.var_follow_back.get():
             to_follow = followers - following
