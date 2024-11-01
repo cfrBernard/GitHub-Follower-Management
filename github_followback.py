@@ -27,7 +27,7 @@ class GitHubManager:
                         blacklist_users = line.split('=')[1].strip()
                         self.blacklist = set(blacklist_users.split(','))
         else:
-            raise FileNotFoundError("Configuration file config.txt not found.")
+            raise FileNotFoundError("Error: Configuration file config.txt not found.")
 
     def save_blacklist(self):
         """ Save the current blacklist to config.txt """
@@ -64,7 +64,7 @@ class GitHubManager:
                 page_users = self.api_request(full_url)
             except Exception as e:
                 if output_textbox:
-                    output_textbox.insert(tk.END, f"Error: {str(e)}\n")  # Afficher l'erreur dans la Text box
+                    output_textbox.insert(tk.END, f"Error: {str(e)}\n")
                 break
 
             if not page_users:
@@ -112,7 +112,7 @@ class App:
 
         tk.Label(frame, text="GitHub Username:", bg="#ffffff").grid(row=0, column=0, sticky="e")
         self.entry_username = tk.Entry(frame, width=25)
-        self.entry_username.insert(0, self.github_manager.github_username)  # Insert username from config
+        self.entry_username.insert(0, self.github_manager.github_username)
         self.entry_username.grid(row=0, column=1)
 
         self.var_follow_back = tk.BooleanVar()
@@ -123,7 +123,7 @@ class App:
 
         tk.Label(frame, text="Blacklist Usernames (one per line):", bg="#ffffff").grid(row=3, column=0, sticky="e")
         self.blacklist_entry = tk.Text(frame, height=5, width=20)
-        self.blacklist_entry.insert(tk.END, "\n".join(self.github_manager.blacklist))  # Load blacklist from config
+        self.blacklist_entry.insert(tk.END, "\n".join(self.github_manager.blacklist))
         self.blacklist_entry.grid(row=3, column=1)
 
         ttk.Button(frame, text="Update Blacklist", command=self.update_blacklist).grid(row=4, column=0, columnspan=2, pady=10)
@@ -138,7 +138,7 @@ class App:
         username = self.entry_username.get().strip()
 
         if not username:
-            self.text_output.insert(tk.END, "Warning: Please enter a username.\n")
+            self.text_output.insert(tk.END, "Error: Please enter a username.\n")
             return
 
         followers = self.github_manager.get_followers(username, output_textbox=self.text_output)
