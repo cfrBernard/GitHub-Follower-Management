@@ -12,6 +12,7 @@ class GitHubManager:
         self.github_username = ""
         self.headers = {}
         self.load_config()
+        self.validate_token()
 
     def load_config(self):
         """ Load GitHub token, username, and blacklist from config.txt """
@@ -28,6 +29,13 @@ class GitHubManager:
                         self.blacklist = set(blacklist_users.split(','))
         else:
             raise FileNotFoundError("Error: Configuration file config.txt not found.")
+
+    def validate_token(self):
+        """ Validate the GitHub token by making a simple API request """
+        response = requests.get("https://api.github.com/user", headers=self.headers)
+        if response.status_code != 200:
+            self.github_token = "" 
+            raise ValueError("Invalid GitHub token.")
 
     def save_blacklist(self):
         """ Save the current blacklist to config.txt """
@@ -115,19 +123,24 @@ class App:
         self.entry_username.insert(0, self.github_manager.github_username)
         self.entry_username.grid(row=0, column=1)
 
+        tk.Label(frame, text="GitHub Token:", bg="#ffffff").grid(row=1, column=0, sticky="e")
+        self.entry_token = tk.Entry(frame, width=25, show="*")
+        self.entry_token.insert(0, self.github_manager.github_token)
+        self.entry_token.grid(row=1, column=1)
+
         self.var_follow_back = tk.BooleanVar()
         self.var_unfollow_non_followers = tk.BooleanVar()
 
-        tk.Checkbutton(frame, text="Follow Back Followers", variable=self.var_follow_back, bg="#ffffff").grid(row=1, column=0, sticky="w")
-        tk.Checkbutton(frame, text="Unfollow Non-Followers", variable=self.var_unfollow_non_followers, bg="#ffffff").grid(row=2, column=0, sticky="w")
+        tk.Checkbutton(frame, text="Follow Back Followers", variable=self.var_follow_back, bg="#ffffff").grid(row=2, column=0, sticky="w")
+        tk.Checkbutton(frame, text="Unfollow Non-Followers", variable=self.var_unfollow_non_followers, bg="#ffffff").grid(row=3, column=0, sticky="w")
 
-        tk.Label(frame, text="Blacklist Usernames (one per line):", bg="#ffffff").grid(row=3, column=0, sticky="e")
+        tk.Label(frame, text="Blacklist Usernames (one per line):", bg="#ffffff").grid(row=4, column=0, sticky="e")
         self.blacklist_entry = tk.Text(frame, height=5, width=20)
         self.blacklist_entry.insert(tk.END, "\n".join(self.github_manager.blacklist))
-        self.blacklist_entry.grid(row=3, column=1)
+        self.blacklist_entry.grid(row=4, column=1)
 
-        ttk.Button(frame, text="Update Blacklist", command=self.update_blacklist).grid(row=4, column=0, columnspan=2, pady=10)
-        ttk.Button(frame, text="Start", command=self.start_actions).grid(row=5, column=0, columnspan=2, pady=10)
+        ttk.Button(frame, text="Update Blacklist", command=self.update_blacklist).grid(row=5, column=0, columnspan=2, pady=10)
+        ttk.Button(frame, text="Start", command=self.start_actions).grid(row=6, column=0, columnspan=2, pady=10)
 
         self.text_output = tk.Text(self.root, height=15, width=70, bg="#f0f0f0", font=("Arial", 10))
         self.text_output.pack(pady=10)
@@ -136,6 +149,18 @@ class App:
         self.github_manager.requests_made = 0
         self.text_output.delete(1.0, tk.END)
         username = self.entry_username.get().strip()
+        token = self.entry_token.get().strip()
+
+        if not token:
+            self.text_output.insert(tk.END, "Error: Please enter a GitHub token.\n")
+            return
+
+        self.github_manager.headers = {"Authorization": f"token {token}"}
+        try:
+            self.github_manager.validate_token()
+        except ValueError as ve:
+            self.text_output.insert(tk.END, str(ve) + "\n")
+            return
 
         if not username:
             self.text_output.insert(tk.END, "Error: Please enter a username.\n")
@@ -172,7 +197,6 @@ class App:
         self.github_manager.blacklist = {user.strip() for user in users if user.strip()}
         self.github_manager.save_blacklist() 
         messagebox.showinfo("Blacklist Updated", "The blacklist has been updated successfully.")
-
 
 if __name__ == "__main__":
     root = tk.Tk()
