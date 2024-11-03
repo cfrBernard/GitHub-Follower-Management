@@ -19,14 +19,16 @@ class GitHubManager:
         if os.path.exists('config.txt'):
             with open('config.txt', 'r') as file:
                 for line in file:
-                    key, value = line.strip().split('=', 1)
-                    if key == "GITHUB_TOKEN":
-                        self.github_token = value.strip()
-                        self.headers = {"Authorization": f"token {self.github_token}"}
-                    elif key == "GITHUB_USERNAME":
-                        self.github_username = value.strip()
-                    elif key == "BLACKLIST":
-                        self.blacklist = set(value.strip().split(','))
+                    line = line.strip()
+                    if "=" in line:
+                        key, value = line.split('=', 1)
+                        if key == "GITHUB_TOKEN":
+                            self.github_token = value.strip()
+                            self.headers = {"Authorization": f"token {self.github_token}"}
+                        elif key == "GITHUB_USERNAME":
+                            self.github_username = value.strip()
+                        elif key == "BLACKLIST":
+                            self.blacklist = set(value.strip().split(','))
 
     def validate_token(self):
         """Validate the GitHub token by making a simple API request."""
@@ -34,7 +36,7 @@ class GitHubManager:
             response = requests.get("https://api.github.com/user", headers=self.headers)
             if response.status_code != 200:
                 self.github_token = ""
-                return "Invalid GitHub token."
+                return "Invalid token."
         return None
 
     def save_config(self):
@@ -46,15 +48,17 @@ class GitHubManager:
 
     def api_request(self, url):
         """Generic API request handler."""
+        if not self.github_token:
+            return {"error": "No token provided."} 
         try:
             response = requests.get(url, headers=self.headers)
             self.requests_made += 1
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
-            raise Exception(f"API Error: {str(e)}")
+            return {"error": f"API Error: {str(e)}"} 
 
-    def get_users(self, username, action, output_textbox=None):
+    def get_users(self, username, action):
         """Retrieve users (followers or following) and apply blacklist."""
         url = f"https://api.github.com/users/{username}/{action}"
         users = []
@@ -62,11 +66,9 @@ class GitHubManager:
         
         while True:
             full_url = f"{url}?per_page=100&page={page}"
-            try:
-                page_users = self.api_request(full_url)
-            except Exception as e:
-                if output_textbox:
-                    output_textbox.insert(tk.END, f"Error: {str(e)}\n")
+            page_users = self.api_request(full_url)
+
+            if "error" in page_users:
                 break
 
             if not page_users:
@@ -110,20 +112,20 @@ class App:
 
     def setup_ui(self):
         """Set up the user interface."""
-        self.root.title("GitHub Subscription Manager")
-        self.root.geometry("600x600")
+        self.root.title("GitHub Follower Management")
+        self.root.geometry("412x500")
         self.root.configure(bg="#e0e0e0")
 
         # Frame for user input
-        frame_user = tk.Frame(self.root, bg="#ffffff", padx=20, pady=20)
-        frame_user.pack(pady=10)
+        frame_user = tk.Frame(self.root, bg="#e0e0e0", padx=20, pady=0)
+        frame_user.pack(pady=0)
 
-        tk.Label(frame_user, text="GitHub Username:", bg="#ffffff").grid(row=0, column=0, sticky="e", padx=5, pady=5)
+        tk.Label(frame_user, text="GitHub Username:", bg="#e0e0e0").grid(row=0, column=0, sticky="e", padx=5, pady=5)
         self.entry_username = tk.Entry(frame_user, width=25)
         self.entry_username.insert(0, self.github_manager.github_username)
         self.entry_username.grid(row=0, column=1, padx=5, pady=5)
 
-        tk.Label(frame_user, text="GitHub Token:", bg="#ffffff").grid(row=1, column=0, sticky="e", padx=5, pady=5)
+        tk.Label(frame_user, text="GitHub Token:", bg="#e0e0e0").grid(row=1, column=0, sticky="e", padx=5, pady=5)
         self.entry_token = tk.Entry(frame_user, width=25, show="*")
         self.entry_token.insert(0, self.github_manager.github_token)
         self.entry_token.grid(row=1, column=1, padx=5, pady=5)
@@ -131,10 +133,10 @@ class App:
         self.var_follow_back = tk.BooleanVar()
         self.var_unfollow_non_followers = tk.BooleanVar()
 
-        tk.Checkbutton(frame_user, text="Follow Back Followers", variable=self.var_follow_back, bg="#ffffff").grid(row=2, column=0, sticky="w", padx=5, pady=5)
-        tk.Checkbutton(frame_user, text="Unfollow Non-Followers", variable=self.var_unfollow_non_followers, bg="#ffffff").grid(row=3, column=0, sticky="w", padx=5, pady=5)
+        tk.Checkbutton(frame_user, text="Follow Back Followers", variable=self.var_follow_back, bg="#e0e0e0").grid(row=2, column=0, sticky="w", padx=5, pady=5)
+        tk.Checkbutton(frame_user, text="Unfollow Non-Followers", variable=self.var_unfollow_non_followers, bg="#e0e0e0").grid(row=3, column=0, sticky="w", padx=5, pady=5)
 
-        tk.Label(frame_user, text="Blacklist Usernames (one per line):", bg="#ffffff").grid(row=4, column=0, sticky="e", padx=5, pady=5)
+        tk.Label(frame_user, text="Blacklist Usernames (one per line):", bg="#e0e0e0").grid(row=4, column=0, sticky="e", padx=5, pady=5)
         self.blacklist_entry = tk.Text(frame_user, height=5, width=20)
         self.blacklist_entry.insert(tk.END, "\n".join(self.github_manager.blacklist))
         self.blacklist_entry.grid(row=4, column=1, padx=5, pady=5)
@@ -142,13 +144,15 @@ class App:
         ttk.Button(frame_user, text="Update Config", command=self.update_config).grid(row=5, column=0, columnspan=2, pady=10)
         ttk.Button(frame_user, text="Start", command=self.start_actions).grid(row=6, column=0, columnspan=2, pady=10)
 
+        self.progress = ttk.Progressbar(self.root, orient="horizontal", length=412, mode="determinate")
+        self.progress.pack(pady=0)
+
         # Output area
-        self.text_output = tk.Text(self.root, height=15, width=70, bg="#ffffff", font=("Arial", 10))
+        self.text_output = tk.Text(self.root, height=15, width=58, bg="#e0e0e0", font=("Arial", 10))
         self.scrollbar = tk.Scrollbar(self.root, command=self.text_output.yview)
         self.text_output.config(yscrollcommand=self.scrollbar.set)
         
-        self.text_output.pack(pady=10)
-        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.text_output.pack(pady=0)
 
     def start_actions(self):
         """Start following and unfollowing actions based on user input."""
@@ -167,26 +171,50 @@ class App:
                 self.text_output.insert(tk.END, f"Error: {token_error}\n")
                 return
         else:
-            self.text_output.insert(tk.END, "Warning: No token provided. Some actions may not work.\n")
+            self.text_output.insert(tk.END, "Error: No token provided.\n")
+            return 
 
         if not username:
             self.text_output.insert(tk.END, "Error: Please enter a username.\n")
             return
 
-        followers = self.github_manager.get_users(username, "followers", output_textbox=self.text_output)
-        following = self.github_manager.get_users(username, "following", output_textbox=self.text_output)
+        followers_response = self.github_manager.get_users(username, "followers")
+        if "error" in followers_response:
+            self.text_output.insert(tk.END, f"Error: {followers_response['error']}\n")
+            return
 
+        following_response = self.github_manager.get_users(username, "following")
+        if "error" in following_response:
+            self.text_output.insert(tk.END, f"Error: {following_response['error']}\n")
+            return
+
+        total_users = 0
         if self.var_follow_back.get():
-            to_follow = followers - following
-            for user in to_follow:
-                if self.github_manager.follow_user(user):
-                    self.text_output.insert(tk.END, f"Followed {user}\n")
+            to_follow = followers_response - following_response
+            total_users += len(to_follow)
 
         if self.var_unfollow_non_followers.get():
-            to_unfollow = following - followers
+            to_unfollow = following_response - followers_response
+            total_users += len(to_unfollow)
+
+        self.progress["maximum"] = total_users
+        self.progress["value"] = 0
+
+        if self.var_follow_back.get():
+            to_follow = followers_response - following_response
+            for user in to_follow:
+                if self.github_manager.follow_user(user):
+                    self.text_output.insert(tk.END, f"Followed {user}\n") 
+                    self.progress["value"] += 1
+                    self.root.update_idletasks()  # Update the UI to show progress
+
+        if self.var_unfollow_non_followers.get():
+            to_unfollow = following_response - followers_response
             for user in to_unfollow:
                 if self.github_manager.unfollow_user(user):
-                    self.text_output.insert(tk.END, f"Unfollowed {user}\n")
+                    self.text_output.insert(tk.END, f"Unfollowed {user}\n") 
+                    self.progress["value"] += 1
+                    self.root.update_idletasks()  # Update the UI to show progress
 
         self.display_rate_limits()
 
@@ -194,9 +222,15 @@ class App:
         """Display the current rate limits after actions are performed."""
         try:
             rate_limit, remaining, reset_in_seconds = self.github_manager.display_rate_limits()
-            self.text_output.insert(tk.END, f"Total requests made: {self.github_manager.requests_made}\n")
-            self.text_output.insert(tk.END, f"Rate Limit: {rate_limit}\nRequests Remaining: {remaining}\n")
-            self.text_output.insert(tk.END, f"Rate Limit Reset in: {reset_in_seconds // 60} minutes {reset_in_seconds % 60} seconds\n")
+
+            output = (
+                f"Total requests made: {self.github_manager.requests_made} | "
+                f"Rate Limit: {rate_limit} | "
+                f"Requests Remaining: {remaining} | "
+                f"Rate Limit Reset in: {reset_in_seconds // 60} minutes {reset_in_seconds % 60} seconds\n"
+            )
+
+            self.text_output.insert(tk.END, output)
         except Exception as e:
             self.text_output.insert(tk.END, str(e) + "\n")
 
