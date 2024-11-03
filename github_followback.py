@@ -206,7 +206,7 @@ class App:
                 if self.github_manager.follow_user(user):
                     self.text_output.insert(tk.END, f"Followed {user}\n") 
                     self.progress["value"] += 1
-                    self.root.update_idletasks()  # Update the UI to show progress
+                    self.root.update_idletasks() 
 
         if self.var_unfollow_non_followers.get():
             to_unfollow = following_response - followers_response
@@ -214,7 +214,7 @@ class App:
                 if self.github_manager.unfollow_user(user):
                     self.text_output.insert(tk.END, f"Unfollowed {user}\n") 
                     self.progress["value"] += 1
-                    self.root.update_idletasks()  # Update the UI to show progress
+                    self.root.update_idletasks()
 
         self.display_rate_limits()
 
