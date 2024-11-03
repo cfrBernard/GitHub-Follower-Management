@@ -1,5 +1,4 @@
-# GitHub Follower Management Script
-This Python script allows you to manage your GitHub subscriptions through a GUI. It can automatically follow users who follow you back, unfollow those who do not, and manage a blacklist of users to ignore.
+GitHub Follower Management Script
 
 ## Features:
 - Follow Back Followers
