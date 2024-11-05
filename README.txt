@@ -7,7 +7,7 @@ GitHub Follower Management Script
 - Rate Limit Monitoring
 
 ## Quick Download
-For the latest `.exe` version, go to [Releases](https://github.com/cfrBernard/GitHub-Follower-Management/releases).
+For the latest '.exe' version, go to [Releases](https://github.com/cfrBernard/GitHub-Follower-Management/releases).
 
 ## Prerequisites:
 - Python 3.x installed on your machine.
@@ -45,3 +45,6 @@ Example: For 150 followers, 120 following, and actions like following 10 new use
 
 # License: 
 This project is licensed under the MIT License. See the LICENSE file for details.
+
+
+Note: I will try to release a MacOS version.
