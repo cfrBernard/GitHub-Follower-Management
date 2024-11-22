@@ -6,8 +6,12 @@
 - **Blacklist Management**: Manage a list of users to ignore for follow/unfollow actions.
 - **Rate Limit Monitoring**: Track and manage API rate limits to avoid hitting them.
 
+---
+
 ## Quick Download
 For the latest '.exe' version, go to the [Releases](https://github.com/cfrBernard/GitHub-Follower-Management/releases) page.
+
+---
 
 ## Prerequisites:
 - Python 3.x installed on your machine.
