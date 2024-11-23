@@ -61,4 +61,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ---
 
-**Note**: A MacOS version will be released in the future.
+**Note**: A MacOS version will be released in the future. Maybe..
