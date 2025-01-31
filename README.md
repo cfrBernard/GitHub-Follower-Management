@@ -1,3 +1,19 @@
+---
+
+## ⚠️ Important Notice // (01/31/2025) 
+
+Please be aware that all versions of this tool currently have a **major issue** that affects users with several thousand followers/following. 🚨
+
+If your account has **thousands of followers or following**, **I strongly advise against using this tool at the moment**. There are known issues with pagination and the handling of large user lists, which may result in incomplete or incorrect data being processed.
+
+💡 **I am actively working on fixing this issue**, and a more stable version will be available soon. Thank you for your patience and understanding!
+
+Stay tuned for updates! 🔧🚀
+
+
+
+---
+
 # GitHub Follower Management Script
 
 ## Features:
