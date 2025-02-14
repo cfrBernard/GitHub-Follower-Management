@@ -2,3 +2,5 @@ build/
 dist/
 
 config.txt
+
+github_users_data.json
