@@ -10,7 +10,9 @@ If your account has **thousands of followers or following**, **I strongly advise
 
 Stay tuned for updates! 🔧🚀
 
+## Update // (02/15/2025) 🛠
 
+I have made progress on the refactoring and created a test script (`app.py` in the `dev` branch) that focuses solely on data collection. The script is highly robust, and everything appears to be functioning correctly. The next step is to rebuild the application around this script.
 
 ---
 
