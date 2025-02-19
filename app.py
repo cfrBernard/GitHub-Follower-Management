@@ -82,9 +82,21 @@ def get_users_list(username, action):
 def dry_run(followers, following):
     to_follow = followers - following - BLACKLIST
     to_unfollow = following - followers - BLACKLIST
-    print("🔄 Dry Run mode enabled. Here are the planned actions:")
+
+    print("\n🔄 Planned actions:")
     print(f"👥 Users to follow: {len(to_follow)}")
     print(f"👥 Users to unfollow: {len(to_unfollow)}")
+
+    while True:
+        choice = input("\n⚡ Do you want to continue? (y/n) ").strip().lower()
+        if choice == "y":
+            print("✅ Starting actions...")
+            return True
+        elif choice == "n":
+            print("❌ Operation canceled.")
+            exit(0)
+        else:
+            print("⚠️ Invalid input. Type 'y' to continue or 'n' to cancel.")
 
 if __name__ == "__main__":
     config = read_config("config.txt")
