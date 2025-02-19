@@ -14,6 +14,19 @@ Stay tuned for updates! 🔧🚀
 
 I have made progress on the refactoring and created a test script (`app.py` in the `dev` branch) that focuses solely on data collection. The script is highly robust, and everything appears to be functioning correctly. The next step is to rebuild the application around this script.
 
+## Progress Update // (02/19/2025) 📈
+
+### Features Implemented (app.py):
+
+1. Error Checking and Halt on Failure: Stops the process if data retrieval fails.
+2. Request Security: Monitors API limits and halts requests when approaching limits.
+3. Dry Run Mode: Displays planned actions without executing them, with user confirmation.
+4. Automatic Follow/Unfollow: Enables or disables follow/unfollow actions.
+5. Statistics Display: Shows follower/following stats and remaining requests.
+6. Blacklist Management: Allows management of a blacklist to ignore certain users.
+
+- GUI Development: Planned as the next major step, focusing on user interface and experience.
+
 ---
 
 # GitHub Follower Management Script
