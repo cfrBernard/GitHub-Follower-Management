@@ -40,7 +40,7 @@ I have made progress on the refactoring and created a test script (`app.py` in t
 ---
 
 ## Quick Download
-For the latest '.exe' version, go to the [Releases](https://github.com/cfrBernard/GitHub-Follower-Management/releases) page.
+For the latest `.exe` version, go to the [Releases](https://github.com/cfrBernard/GitHub-Follower-Management/releases) page.
 
 ---
 
