@@ -2,19 +2,17 @@
 
 ## ⚠️ Important Notice // (01/31/2025) 
 
-Please be aware that all versions of this tool currently have a **major issue** that affects users with several thousand followers/following. 🚨
+Please be aware that all versions of this tool currently have a **major issue** that affects users with several thousand followers/following.
 
 If your account has **thousands of followers or following**, **I strongly advise against using this tool at the moment**. There are known issues with pagination and the handling of large user lists, which may result in incomplete or incorrect data being processed.
 
-💡 **I am actively working on fixing this issue**, and a more stable version will be available soon. Thank you for your patience and understanding!
+> **I am actively working on fixing this issue**, and a more stable version will be available soon. Thank you for your patience and understanding!
 
-Stay tuned for updates! 🔧🚀
-
-## Update // (02/15/2025) 🛠
+## Progress Update // (02/15/2025)
 
 I have made progress on the refactoring and created a test script (`app.py` in the `dev` branch) that focuses solely on data collection. The script is highly robust, and everything appears to be functioning correctly. The next step is to rebuild the application around this script.
 
-## Progress Update // (02/19/2025) 📈
+## Progress Update // (02/19/2025)
 
 ### Features Implemented (app.py):
 
@@ -31,6 +29,11 @@ I have made progress on the refactoring and created a test script (`app.py` in t
 
 # GitHub Follower Management Script
 
+[**Download the latest version here**](https://github.com/cfrBernard/GitHub-Follower-Management/releases)
+
+![Version](https://img.shields.io/badge/version-v2.2.0-blue)
+![License](https://img.shields.io/github/license/cfrBernard/MaskMapWizard)
+
 ## Features:
 - **Follow Back Followers**: Automatically follow back users who follow you.
 - **Unfollow Non-Followers**: Unfollow users who don't follow you back.
@@ -39,16 +42,13 @@ I have made progress on the refactoring and created a test script (`app.py` in t
 
 ---
 
-## Quick Download
-For the latest `.exe` version, go to the [Releases](https://github.com/cfrBernard/GitHub-Follower-Management/releases) page.
+## 🛠 Development Setup
 
----
-
-## Prerequisites:
+### Prerequisites:
 - Python 3.x installed on your machine.
 - A personal access token from GitHub with the necessary permissions to manage your subscriptions.
 
-## Installation:
+### Installation:
 1. Clone this repository or download the script:
     ```bash
     git clone https://github.com/cfrBernard/GitHub-Follower-Management.git
@@ -60,7 +60,7 @@ For the latest `.exe` version, go to the [Releases](https://github.com/cfrBernar
     ```
    **Note**: `tkinter` comes pre-installed with Python on most systems, but you can check if it's available by trying to import it in a Python shell.
 
-## Configuration:
+### Configuration:
 1. Create a `config.txt` file in the same directory as the script.
 2. Add the following lines to `config.txt`:
     ```text
@@ -85,11 +85,13 @@ For the latest `.exe` version, go to the [Releases](https://github.com/cfrBernar
 - **Authenticated users**: 5000 requests/hour
 - **Unauthenticated users**: 60 requests/hour
 
-**Example**: For 150 followers, 120 following, and actions like following 10 new users and unfollowing 5, only 24 requests are used—well within the authenticated limit.
-
-## License: 
-This project is licensed under the MIT License. See the LICENSE file for details.
+> **Example**: For 150 followers, 120 following, and actions like following 10 new users and unfollowing 5, only 24 requests are used—well within the authenticated limit.
 
 ---
 
-**Note**: A MacOS version will be released in the future. Maybe..
+## License: 
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE.md) file for details.
+
+---
+
+> **Note**: A MacOS version will be released in the future. Maybe..
