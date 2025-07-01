@@ -1,6 +1,9 @@
+ideas/
+
 build/
 dist/
 .venv/
+__pycache__/
 
 config.txt
 
