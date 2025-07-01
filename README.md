@@ -1,5 +1,3 @@
----
-
 ## ⚠️ Important Notice // (01/31/2025) 
 
 Please be aware that all versions of this tool currently suffer from a major bug affecting accounts with thousands of followers or following.
@@ -59,7 +57,7 @@ If you’re comfortable with the command line, use the new CLI version from the 
     git checkout dev
     ```
 
-    > **Note**: Using a .venv is highly recommended.
+    > Using a .venv is highly recommended.
    
 3. Install the required libraries:
     ```bash
