@@ -28,8 +28,8 @@ It refactors and improves core logic for data collection, and is significantly m
 
 [**Download the latest version here**](https://github.com/cfrBernard/GitHub-Follower-Management/releases)
 
-![Version](https://img.shields.io/badge/version-v2.2.0-blue)
-![License](https://img.shields.io/github/license/cfrBernard/MaskMapWizard)
+[![Version](https://img.shields.io/badge/version-v2.2.0-blue)](https://github.com/cfrBernard/GitHub-Follower-Management/releases)
+[![License](https://img.shields.io/github/license/cfrBernard/MaskMapWizard)](./LICENSE.md)
 
 ## Features:
 - **Follow Back Followers**: Automatically follow back users who follow you.
@@ -94,3 +94,4 @@ This project is licensed under the MIT License. See the [LICENSE](./LICENSE.md) 
 ---
 
 > **Note**: A MacOS version will be released in the future. Maybe..
+
