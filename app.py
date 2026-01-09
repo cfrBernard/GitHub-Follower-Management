@@ -166,7 +166,7 @@ def process_follow_unfollow(followers, following, x=100):
 
     remaining_requests, _ = check_rate_limit()
 
-    # Calculate maximum actions based on the defined variable x
+    # Calculate maximum actions
     max_allowed_actions = (remaining_requests - x) // 3
 
     if max_allowed_actions <= 0:
@@ -241,7 +241,6 @@ if __name__ == "__main__":
 
         # Dry Run before executing actions
         if dry_run(followers, following):
-            # Enable follow/unfollow here for testing
             process_follow_unfollow(followers, following)
 
         # Display remaining API requests at the end of the run
