@@ -1,4 +1,10 @@
+ideas/
+
 build/
 dist/
+.venv/
+__pycache__/
 
 config.txt
+
+github_users_data.json
